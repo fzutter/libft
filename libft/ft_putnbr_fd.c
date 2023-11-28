@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fzutter <fzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 13:09:50 by fzutter           #+#    #+#             */
-/*   Updated: 2023/11/28 14:32:43 by fzutter          ###   ########.fr       */
+/*   Created: 2023/11/28 15:41:51 by fzutter           #+#    #+#             */
+/*   Updated: 2023/11/28 16:36:22 by fzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+void	ft_putnbr_fd(int n, int fd)
 {
-	int			i;
-	char		*char_dest;
-	const char	*char_src;
+	char	nb[12];
+	int		i;
 
-	char_dest = (char *) dest;
-	char_src = (char *) src;
 	i = 0;
-	if (dest == (void *) 0 && src == (void *) 0)
-		return (dest);
-	while (i < (int) n)
+	if (n == -2147483648)
 	{
-		char_dest[i] = char_src[i];
-		i++;
+		nb[i++] = '8';
+		n = n / 10;
 	}
-	return (dest);
+	if (n == 0)
+		write(fd, "0", 1);
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		n = n * -1;
+	}
+	while (n != 0)
+	{
+		nb[i++] = (n % 10) + '0';
+		n = n / 10;
+	}
+	while (i > 0)
+		write(fd, &nb[i-- - 1], 1);
 }
